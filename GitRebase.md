@@ -24,8 +24,8 @@ Det kan måske hjælpe med at besvare nogle af følgende spørgsmål eller løse
 Flows
 -----
 
-Non-editing flows:
-- work on two branches (master and develop)
+A) Non-editing flows:
+- A1: work on two branches (master and develop)
 - simple merge on branch
 - pull with merge
 - merge to master and resulting history

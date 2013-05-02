@@ -38,10 +38,10 @@ Basic editing flows:
 - B3: pull with rebase
 
 Advanced editing flows:
-- rebase -i with squash, fix and reword
-- rebase -i origin/develop (before pushing local changes from 'develop' to 'origin/develop')
-- rebase -i master (before merging changes from 'develop' to 'master')
-- rebase -i with edit of existing commits
+- C1: rebase -i with squash, fix and reword
+- C2: rebase -i origin/develop (before pushing local changes from 'develop' to 'origin/develop')
+- C3: rebase -i master (before merging changes from 'develop' to 'master')
+- C4: rebase -i with edit of existing commits
 
 Benefits of 'editing flows':
 - bisect gets easier

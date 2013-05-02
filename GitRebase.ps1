@@ -41,7 +41,7 @@ function AddTodoStuff ($fileName) {
 "
     Set-Content $fileName $content
     git add .
-    git commit -m "Update todo."
+    git commit -m "Update $fileName"
 }
 
 function AddCommitsPullPush ($name) {
@@ -218,6 +218,43 @@ function ScenarioB1 {
 	cd ..
 }
 
+function ScenarioB2 {
+	git init B2-repo
+	cd B2-repo
+		git config user.name "B2"
+		Set-Content readme.txt "Please read me first."
+		git add .
+		git commit -m "Add readme file."
+		AddTodoStuff "todo.txt"
+		git checkout -b alpha
+		AddTodoStuff "dev.txt"
+		AddTodoStuff "dev.txt"
+		AddTodoStuff "brilliant.txt"
+		git checkout -b beta master
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "todo.txt"
+	cd ..
+}
+
+function ScenarioB3 {
+	git init B3-mother --bare
+	git clone B3-mother B3-alpha
+	cd B3-alpha
+		git config user.name "B3"
+		Set-Content readme.txt "Please read me first."
+		git add .
+		git commit -m "Add readme file."
+		git push
+		AddTodoStuff "alpha.txt"
+	cd ..
+	git clone B3-mother B3-beta
+	cd B3-beta
+		AddTodoStuff "beta.txt"
+		git push
+	cd ..
+}
+
 Cleanup
 mkdir GitRebaseExamples
 cd GitRebaseExamples
@@ -225,4 +262,6 @@ cd GitRebaseExamples
 	#ScenarioA1
 	#ScenarioA2
 	ScenarioB1
+	ScenarioB2
+	ScenarioB3
 cd ..

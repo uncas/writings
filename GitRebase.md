@@ -24,7 +24,7 @@ Det kan måske hjælpe med at besvare nogle af følgende spørgsmål eller løse
 Flows
 -----
 
-A) Non-editing flows:
+Non-editing flows:
 - A1: work on same branch
 - A2: work on two branches (master and develop)
 - simple merge on branch
@@ -32,9 +32,10 @@ A) Non-editing flows:
 - merge to master and resulting history
 
 Basic editing flows:
-- pull with rebase
-- commit --amend
-- cherry-pick <sha>
+- B1: commit --amend
+-- reflog
+- B2: cherry-pick <sha>
+- B3: pull with rebase
 
 Advanced editing flows:
 - rebase -i with squash, fix and reword

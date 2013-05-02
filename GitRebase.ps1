@@ -202,10 +202,27 @@ function ScenarioA2 {
 	cd ..
 }
 
+function ScenarioB1 {
+	git init B1-repo
+	cd B1-repo
+		git config user.name "B1"
+		Set-Content readme.txt "Please read me first."
+		git add .
+		git commit -m "Add readme file."
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "todo.txt"
+		Set-Content todo.txt "Woops"
+		git add .
+		git commit -m "Woops!"
+	cd ..
+}
+
 Cleanup
 mkdir GitRebaseExamples
 cd GitRebaseExamples
 	#AnalyzeWorkflow
 	#ScenarioA1
-	ScenarioA2
+	#ScenarioA2
+	ScenarioB1
 cd ..

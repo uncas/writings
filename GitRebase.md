@@ -25,7 +25,8 @@ Flows
 -----
 
 A) Non-editing flows:
-- A1: work on two branches (master and develop)
+- A1: work on same branch
+- A2: work on two branches (master and develop)
 - simple merge on branch
 - pull with merge
 - merge to master and resulting history

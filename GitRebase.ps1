@@ -33,6 +33,17 @@ function AddCommit ($name) {
     git commit -m "Update todo."
 }
 
+function AddTodoStuff ($fileName) {
+    if (Test-Path $fileName) {
+        $content = Get-Content $fileName
+    }
+    $content += "More stuff.
+"
+    Set-Content $fileName $content
+    git add .
+    git commit -m "Update todo."
+}
+
 function AddCommitsPullPush ($name) {
     cd $name
     #AddCommit $name
@@ -74,17 +85,127 @@ function AnalyzeWorkflow {
 	AnalyzeResult
 }
 
+function ContributeStuff ($repo, $file) {
+	cd $repo
+		AddTodoStuff $file
+		git pull --rebase
+		git push
+	cd ..
+}
+
 function ScenarioA1 {
 	git init A1-mother --bare
-	PrepareClone "A1-alpha" "A1-mother"
-	InitializeBranch "A1-alpha"
+	
+	git clone A1-mother A1-alpha
+		cd A1-alpha
+		git config user.name "alpha"
+		git config user.email "alpha@example.com"
+		Set-Content readme.txt "Readme"
+		git add .
+		git commit -m "Add readme."
+		git push
+	cd ..
+
+	ContributeStuff "A1-alpha" "todo-alpha.txt"
+	
+	git clone A1-mother A1-beta
+		cd A1-beta
+		git config user.name "beta"
+		git config user.email "beta@example.com"
+	cd ..
+	
+	git clone A1-mother A1-gamma
+		cd A1-gamma
+		git config user.name "gamma"
+		git config user.email "gamma@example.com"
+	cd ..
+	
+	git clone A1-mother A1-delta
+		cd A1-delta
+		git config user.name "delta"
+		git config user.email "delta@example.com"
+	cd ..
+	
+	for ($i = 0; $i -lt 3; $i++) {
+		ContributeStuff "A1-alpha" "todo-alpha.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-beta" "todo-beta.txt"
+		ContributeStuff "A1-gamma" "todo-gamma.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-beta" "todo-beta.txt"
+		ContributeStuff "A1-alpha" "todo-alpha.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-gamma" "todo-gamma.txt"
+		ContributeStuff "A1-beta" "todo-beta.txt"
+		ContributeStuff "A1-gamma" "todo-gamma.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-alpha" "todo-alpha.txt"
+		ContributeStuff "A1-beta" "todo-beta.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-gamma" "todo-gamma.txt"
+		ContributeStuff "A1-alpha" "todo-alpha.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-beta" "todo-beta.txt"
+		ContributeStuff "A1-alpha" "todo-alpha.txt"
+		ContributeStuff "A1-delta" "todo-delta.txt"
+		ContributeStuff "A1-gamma" "todo-gamma.txt"
+	}
+
+	cd A1-alpha
+	git lol
+	cd ..
+}
+
+function ScenarioA2 {
+	git init A2-mother --bare
+	
+	git clone A2-mother A2-alpha
+		cd A2-alpha
+		git config user.name "alpha"
+		git config user.email "alpha@example.com"
+		Set-Content readme.txt "Readme"
+		git add .
+		git commit -m "Add readme."
+		git push
+	cd ..
+
+	git clone A2-mother A2-beta
+		cd A2-beta
+		git config user.name "beta"
+		git config user.email "beta@example.com"
+	cd ..
+
+	cd A2-alpha
+		git checkout -b alpha
+		git push -u origin alpha
+	cd ..
+	
+	for ($i = 0; $i -lt 3; $i++) {
+		cd A2-beta
+			AddTodoStuff "todo-beta.txt"
+			git pull
+			git push
+		cd ..
+
+		cd A2-alpha
+			AddTodoStuff "todo-alpha.txt"
+			git pull
+			git push . origin/master:master
+			git merge master
+			git push
+		cd ..
+	}
+
+	cd A2-alpha
+	git lol
+	cd ..
 }
 
 Cleanup
 mkdir GitRebaseExamples
 cd GitRebaseExamples
-
-#AnalyzeWorkflow
-ScenarioA1
-
+	#AnalyzeWorkflow
+	#ScenarioA1
+	ScenarioA2
 cd ..

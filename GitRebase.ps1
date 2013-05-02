@@ -255,6 +255,102 @@ function ScenarioB3 {
 	cd ..
 }
 
+function ScenarioC1 {
+	git init C1-repo
+	cd C1-repo
+		git config user.name "C1"
+		Set-Content readme.txt "Please read me first."
+		git add .
+		git commit -m "Add readme file."
+		git checkout -b develop
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "nb.txt"
+		AddTodoStuff "crap.txt"
+		AddTodoStuff "misc.txt"
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "dev.txt"
+		AddTodoStuff "dev.txt"
+		AddTodoStuff "misc.txt"
+		AddTodoStuff "nb.txt"
+		AddTodoStuff "dev.txt"
+		AddTodoStuff "nb.txt"
+		AddTodoStuff "todo.txt"
+		AddTodoStuff "todo.txt"
+	cd ..
+}
+
+function ScenarioC2 {
+	git init C2-mother --bare
+	git clone C2-mother C2-alpha
+	cd C2-alpha
+		git config user.name "C2"
+		Set-Content readme.txt "Please read me first."
+		git add .
+		git commit -m "Add readme file."
+		git push
+		AddTodoStuff "alpha.txt"
+	cd ..
+	git clone C2-mother C2-beta
+	cd C2-beta
+		git config user.name "beta"
+		AddTodoStuff "beta.txt"
+		git push
+	cd ..
+	for ($i = 0; $i -lt 4; $i++) {
+		cd C2-alpha
+			git pull
+			AddTodoStuff "alpha.txt"
+		cd ..
+		cd C2-beta
+			AddTodoStuff "beta.txt"
+			git push
+		cd ..
+	}
+}
+
+function ScenarioC3 {
+	git init C3-mother --bare
+	git clone C3-mother C3-alpha
+	cd C3-alpha
+		git config user.name "C3"
+		Set-Content readme.txt "Please read me first."
+		git add .
+		git commit -m "Add readme file."
+		git push
+		git checkout -b alpha
+		AddTodoStuff "alpha.txt"
+		git push -u origin alpha
+	cd ..
+	git clone C3-mother C3-beta
+	cd C3-beta
+		git config user.name "beta"
+		git checkout alpha
+	cd ..
+	git clone C3-mother C3-gamma
+	cd C3-gamma
+		git config user.name "gamma"
+	cd ..
+	for ($i = 0; $i -lt 4; $i++) {
+		cd C3-beta
+			AddTodoStuff "beta.txt"
+			git pull
+			git push
+		cd ..
+		cd C3-gamma
+			git pull
+			AddTodoStuff "gamma.txt"
+			git push
+		cd ..
+		cd C3-alpha
+			AddTodoStuff "alpha.txt"
+			git pull
+			git push . origin/master:master
+			git merge master
+			git push
+		cd ..
+	}
+}
+
 Cleanup
 mkdir GitRebaseExamples
 cd GitRebaseExamples
@@ -264,4 +360,7 @@ cd GitRebaseExamples
 	ScenarioB1
 	ScenarioB2
 	ScenarioB3
+	ScenarioC1
+	ScenarioC2
+	ScenarioC3
 cd ..

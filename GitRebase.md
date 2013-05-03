@@ -44,6 +44,9 @@ Advanced editing flows:
 
 Extra:
 - D1: bisect
+-- Linear is easier to visualize and takes fewer steps
+-- Rebase to remove compile errors
+-- Rebase to compile many small commits into logical units such that bisect is more logically correct
 
 Benefits of 'editing flows':
 - bisect gets easier
